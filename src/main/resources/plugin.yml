@@ -1,0 +1,9 @@
+name: SmackStats
+version: ${project.version}
+main: me.bald.smackstats.SmackStats
+api-version: 1.13
+authors: [Mister_Bald]
+description: A SmackStats Plugin.
+commands:
+  smackstats:
+    description: Smackstats Plugin.
