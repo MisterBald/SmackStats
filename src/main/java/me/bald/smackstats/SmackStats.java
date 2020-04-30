@@ -1,5 +1,6 @@
 package me.bald.smackstats;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -44,12 +45,16 @@ public final class SmackStats extends JavaPlugin implements Listener {
 
             // If command sender is player, get stats & send to user
             if(sender instanceof Player){
+                Player player = (Player) sender;
                 if(args.length > 0) {
-                    Player player = (Player) sender;
-                    player.sendMessage(prefix+player.getDisplayName()+" has been smacked "+getSmacked(player.getUniqueId())+" times.");
-                    player.sendMessage(prefix+player.getDisplayName()+" has smacked "+getSmacks(player.getUniqueId())+" others.");
+                    Player player1 = Bukkit.getPlayerExact(args[0]);
+                    if(player1 != null) {
+                        player.sendMessage(prefix+player1.getDisplayName()+" has been smacked "+getSmacked(player1.getUniqueId())+" times.");
+                        player.sendMessage(prefix+player1.getDisplayName()+" has smacked "+getSmacks(player1.getUniqueId())+" others.");
+                    }else{
+                        player.sendMessage(prefix+ChatColor.RED+"Player not found");
+                    }
                 }else{
-                    Player player = (Player) sender;
                     player.sendMessage(prefix+player.getDisplayName()+" has been smacked "+getSmacked(player.getUniqueId())+" times.");
                     player.sendMessage(prefix+player.getDisplayName()+" has smacked "+getSmacks(player.getUniqueId())+" others.");
                 }
@@ -76,13 +81,13 @@ public final class SmackStats extends JavaPlugin implements Listener {
         saveConfig();
     }
 
+
     @EventHandler
     public void onPlayerLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.sendMessage("Hello World!");
         UUID playerUUID = player.getUniqueId();
-        config.set(playerUUID.toString()+".smacks", 0);
-        config.set(playerUUID.toString()+".smacked", 0);
+        config.addDefault(playerUUID.toString()+".smacks", 0);
+        config.addDefault(playerUUID.toString()+".smacked", 0);
         saveConfig();
         player.sendMessage(prefix+"Your Smacks: "+getSmacks(playerUUID));
     }
