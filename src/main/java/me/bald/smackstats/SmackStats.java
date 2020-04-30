@@ -42,7 +42,6 @@ public final class SmackStats extends JavaPlugin implements Listener {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // The /smackstats command, Will show users smacks
         if(command.getName().equalsIgnoreCase("smackstats")){
-
             // If command sender is player, get stats & send to user
             if(sender instanceof Player){
                 Player player = (Player) sender;
