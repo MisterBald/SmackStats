@@ -24,18 +24,16 @@ public final class SmackStats extends JavaPlugin implements Listener {
         // Plugin startup logic
         getLogger().info("Plugin Initiated");
         getServer().getPluginManager().registerEvents(this, this);
-        loadConfig();
+
+        PlayerDataManager.setup();
+        PlayerDataManager.get().options().copyDefaults(true);
+        PlayerDataManager.save();
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         getLogger().info("Plugin Shutdown");
-    }
-
-    private void loadConfig(){
-        getConfig().options().copyDefaults(true);
-        saveConfig();
     }
 
     @Override
@@ -63,21 +61,21 @@ public final class SmackStats extends JavaPlugin implements Listener {
     }
 
     public int getSmacks(UUID playerUUID){
-        return Integer.parseInt(config.getString(playerUUID+".smacks"));
+        return Integer.parseInt(PlayerDataManager.get().getString(playerUUID+".smacks"));
     }
 
     public int getSmacked(UUID playerUUID){
-        return Integer.parseInt(config.getString(playerUUID+".smacked"));
+        return Integer.parseInt(PlayerDataManager.get().getString(playerUUID+".smacked"));
     }
 
     public void saveSmacked(UUID playerUUID){
-        config.set(playerUUID.toString()+".smacked", getSmacked(playerUUID)+1);
-        saveConfig();
+        PlayerDataManager.get().set(playerUUID.toString()+".smacked", getSmacked(playerUUID)+1);
+        PlayerDataManager.save();
     }
 
     public void saveSmacks(UUID playerUUID){
-        config.set(playerUUID.toString()+".smacks", getSmacks(playerUUID)+1);
-        saveConfig();
+        PlayerDataManager.get().set(playerUUID.toString()+".smacks", getSmacks(playerUUID)+1);
+        PlayerDataManager.save();
     }
 
 
@@ -85,9 +83,9 @@ public final class SmackStats extends JavaPlugin implements Listener {
     public void onPlayerLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
-        config.addDefault(playerUUID.toString()+".smacks", 0);
-        config.addDefault(playerUUID.toString()+".smacked", 0);
-        saveConfig();
+        PlayerDataManager.get().addDefault(playerUUID.toString()+".smacks", 0);
+        PlayerDataManager.get().addDefault(playerUUID.toString()+".smacked", 0);
+        PlayerDataManager.save();
         player.sendMessage(prefix+"Your Smacks: "+getSmacks(playerUUID));
     }
 
