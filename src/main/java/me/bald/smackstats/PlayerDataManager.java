@@ -13,7 +13,7 @@ public class PlayerDataManager {
     private static FileConfiguration customFile;
 
     public static void setup(){
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("SmackStats").getDataFolder(), "playerdata.yml");
+        file = new File(Bukkit.getServer().getPluginManager().getPlugin("SmackStats").getDataFolder(), "playerdata/playerdata.yml");
         if(!file.exists()){
             try {
                 file.createNewFile();
